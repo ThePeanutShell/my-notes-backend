@@ -4,7 +4,10 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.util.Date
 import kotlin.io.encoding.Base64
 import kotlin.time.Duration.Companion.days
@@ -55,7 +58,10 @@ class JwtService(
     }
 
     fun getUserIdFromJWT(token: String): String {
-        val claims = parseAllClaims(token) ?: throw IllegalArgumentException("Invalid token.")
+        val claims = parseAllClaims(token) ?: throw ResponseStatusException(
+            HttpStatusCode.valueOf(401),
+            "Invalid token."
+        )
         return claims.subject
     }
 
