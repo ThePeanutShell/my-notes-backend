@@ -1,6 +1,7 @@
 package com.emilioelenespraget.mynotesbackend.controller
 
 import com.emilioelenespraget.mynotesbackend.security.AuthService
+import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Pattern
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,7 +30,7 @@ class AuthController(
 
     @PostMapping("/register")
     fun register(
-        @RequestBody body: AuthRequest
+        @Valid @RequestBody body: AuthRequest
     ) {
         authService.register(body.email, body.password)
     }
