@@ -2,6 +2,7 @@ package com.emilioelenespraget.mynotesbackend.controller
 
 import com.emilioelenespraget.mynotesbackend.database.model.Note
 import com.emilioelenespraget.mynotesbackend.database.repository.NoteRepository
+import jakarta.validation.constraints.NotBlank
 import org.bson.types.ObjectId
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -20,6 +21,7 @@ class NoteController(private val repository: NoteRepository) {
 
     data class NoteRequest(
         val id: String?,
+        @NotBlank(message = "Title can't be blank.")
         val title: String,
         val content: String,
         val color: Long,
