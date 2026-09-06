@@ -5,11 +5,11 @@ import com.emilioelenespraget.mynotesbackend.database.model.User
 import com.emilioelenespraget.mynotesbackend.database.repository.RefreshTokenRepository
 import com.emilioelenespraget.mynotesbackend.database.repository.UserRepository
 import org.bson.types.ObjectId
+import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.springframework.web.client.HttpStatusCodeException
 import org.springframework.web.server.ResponseStatusException
 import java.security.MessageDigest
 import java.util.Base64
@@ -28,6 +28,10 @@ class AuthService(
     )
 
     fun register(email: String, password: String): User {
+        val user = userRepository.findByEmail(email.trim())
+        if (user != null) {
+            throw ResponseStatusException(HttpStatus.CONFLICT, "A user with that email already exists.auth")
+        }
         return userRepository.save(
             User(
                 email = email,
