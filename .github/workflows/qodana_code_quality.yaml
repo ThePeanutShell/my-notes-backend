@@ -29,6 +29,8 @@ jobs:
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
         with:
+          args: |
+            --linter qodana-jvm
           # When pr-mode is set to true, Qodana analyzes only the files that have been changed
           pr-mode: false
           use-caches: true
@@ -38,8 +40,6 @@ jobs:
           upload-result: false
           # quick-fixes available in Ultimate and Ultimate Plus plans
           push-fixes: 'none'
-      - name: Run Qodana
-        uses: JetBrains/qodana-action@v2024.2
+      - uses: github/codeql-action/upload-sarif@v2
         with:
-          args: --baseline,qodana-baseline.sarif
-        retry: true # Add automatic retry
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
